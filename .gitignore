@@ -1,0 +1,20 @@
+# Build output
+.build/
+.swiftpm/
+build/
+dist/
+*.iconset
+
+# macOS
+.DS_Store
+
+# Signing material — never commit
+*.p12
+*.cer
+*.key
+*.pem
+*.certSigningRequest
+*.mobileprovision
+
+# Local build settings (bundle ID, identities)
+local.env
