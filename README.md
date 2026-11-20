@@ -3,16 +3,39 @@
 Window previews for the macOS Dock — a native replacement for HyperDock.
 Menu bar app (no Dock icon), macOS 14+, Apple Silicon and Intel.
 
-## Develop
+## Build and run it yourself
 
-The app ID is `com.teamgoblin.dockpeek`. To build under a different ID locally, copy
-`local.env.example` to `local.env` (git-ignored) and set `DOCKPEEK_BUNDLE_ID`.
+No paid Apple Developer account needed.
+
+**Requirements:** macOS 14 (Sonoma) or newer, and Swift 5.10+, which comes with Xcode 15.3+ or
+the Command Line Tools (`xcode-select --install`). Works on Apple Silicon and Intel.
 
 ```sh
-./build.sh --install     # build, sign (Apple Development), install to /Applications, relaunch
+git clone <this repo> DockPeek
+cd DockPeek
+./build.sh --install
 ```
 
-## Release a shareable installer
+That builds for your Mac, installs `/Applications/DockPeek.app`, and launches it. A Dock-shaped
+icon appears in the menu bar. Then:
+
+1. Grant **Accessibility** and **Screen Recording** in System Settings → Privacy & Security.
+   DockPeek's Settings → Advanced shows when both are granted.
+2. Quit and reopen DockPeek from the menu bar icon if macOS asks you to.
+3. Hover any running app in the Dock.
+4. Optional: turn on **Launch at login** in Settings → General.
+
+**Signing:** `build.sh` uses an *Apple Development* certificate if you have one (any Apple ID
+signed into Xcode gets one free). Without one it falls back to ad-hoc signing, which works, but
+macOS may ask you to re-grant the two permissions after each rebuild.
+
+**App ID:** defaults to `com.teamgoblin.dockpeek`. To build under your own, copy
+`local.env.example` to `local.env` (git-ignored) and set `DOCKPEEK_BUNDLE_ID`.
+
+**If it crashes:** open Console → Crash Reports, find the `DockPeek` entry, and attach that
+report (the `.ips` file) to an issue.
+
+## Release a shareable installer (maintainers)
 
 One-time setup:
 

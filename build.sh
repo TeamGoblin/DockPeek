@@ -11,7 +11,9 @@ IDENTITY="${DOCKPEEK_SIGN_IDENTITY:-$(security find-identity -v -p codesigning |
 IDENTITY="${IDENTITY:--}"  # fall back to ad-hoc signing
 APP="build/DockPeek.app"
 
-swift build -c release --arch arm64
+# Builds for the Mac you are on (Apple Silicon or Intel).
+swift build -c release
+BIN_DIR=$(swift build -c release --show-bin-path)
 
 if [[ ! -f Resources/AppIcon.icns ]]; then
   swift scripts/make-icon.swift Resources/AppIcon
@@ -21,7 +23,7 @@ fi
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp .build/arm64-apple-macosx/release/DockPeek "$APP/Contents/MacOS/DockPeek"
+cp "$BIN_DIR/DockPeek" "$APP/Contents/MacOS/DockPeek"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
 if [[ -n "${DOCKPEEK_BUNDLE_ID:-}" ]]; then
   /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $DOCKPEEK_BUNDLE_ID" "$APP/Contents/Info.plist"
